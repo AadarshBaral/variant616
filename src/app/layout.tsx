@@ -19,15 +19,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          sg.className,
-          "antialiased bg-[#141A13] max-w-[900px] mx-auto flex flex-col min-h-screen"
-        )}
-      >
-        <Header />
-        {children}
-        <Footer />
+      <body className={cn(sg.className, "antialiased bg-[#141A13] ")}>
+        <div className="wrapper bg-[#141A13] max-w-[900px] mx-auto flex flex-col min-h-screen">
+          <Header />
+          {children}
+          <Footer />
+        </div>
       </body>
     </html>
   );
