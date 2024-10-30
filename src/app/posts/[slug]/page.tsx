@@ -2,10 +2,10 @@ import { fetchPostById } from "@/config/firebaseConfig";
 import { Post } from "@/utils/types";
 import Image from "next/image";
 import React from "react";
-
-async function Blog({ params }: { params: { id: string } }) {
-  const { id } = await params;
-  const post: Post | null = await fetchPostById(id);
+type Params = Promise<{ slug: string }>;
+async function Blog({ params }: { params: Params }) {
+  const { slug } = await params;
+  const post: Post | null = await fetchPostById(slug);
   console.log(post?.headerImage);
 
   if (!post) {
@@ -31,12 +31,6 @@ async function Blog({ params }: { params: { id: string } }) {
           <p className="text-white text-lg sm:text-xl">P{post.content}</p>
         </div>
       </div>
-      {/* <div className="flex items-center justify-center mb-5 w-full fixed bottom-0 left-0">
-        <FloatingDock
-          mobileClassName="translate-y-20" // only for demo, remove for production
-          items={links}
-        />
-      </div> */}
     </div>
   );
 }

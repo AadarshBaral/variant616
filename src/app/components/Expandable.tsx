@@ -1,6 +1,7 @@
 "use client";
 import { HTMLAttributes, useEffect, useState } from "react";
 import { cn } from "@/utils/cn";
+import Image from "next/image";
 
 interface ImageProps extends HTMLAttributes<HTMLDivElement> {
   item: { image: string; title: string };
@@ -39,9 +40,11 @@ const List = ({ item, className, index, activeItem, ...props }: ImageProps) => {
       )}
       {...props}
     >
-      <img
-        src={item.image}
+      <Image
+        src={"/" + item.image}
         alt={item.title}
+        width={600}
+        height={600}
         className={cn(
           "h-full w-full object-cover shadow-inner shadow-black/50 brightness-95",
           {
