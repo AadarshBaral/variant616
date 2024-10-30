@@ -1,10 +1,7 @@
 import { fetchPostById } from "@/config/firebaseConfig";
-import { Post } from "@/utils/types";
 import Image from "next/image";
-import { Suspense } from "react";
 
-// Set the cache revalidation time
-export const revalidate = 60; // Revalidate the page
+export const revalidate = 60;
 
 type Params = Promise<{ slug: string }>;
 export default async function Blog(props: { params: Params }) {
@@ -36,9 +33,4 @@ export default async function Blog(props: { params: Params }) {
       </div>
     </div>
   );
-}
-
-// Loading Indicator Component
-function LoadingIndicator() {
-  return <p className="text-center text-xl mt-10">Loading...</p>;
 }
