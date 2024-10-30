@@ -3,7 +3,6 @@ import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/utils/cn";
 import Header from "@/app/components/Header";
-import Footer from "./components/Footer";
 
 const sg = Space_Grotesk({ subsets: ["latin"] });
 
@@ -23,7 +22,7 @@ export default function RootLayout({
         <div className="wrapper bg-[#141A13] max-w-[900px] mx-auto flex flex-col min-h-screen">
           <Header />
           {children}
-          <Footer />
+          {/* <Footer /> */}
         </div>
       </body>
     </html>
