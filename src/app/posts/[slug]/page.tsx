@@ -1,6 +1,6 @@
 import { fetchPostById } from "@/config/firebaseConfig";
 import Image from "next/image";
-
+import Markdown from "react-markdown";
 export const revalidate = 60;
 
 type Params = Promise<{ slug: string }>;
@@ -27,8 +27,10 @@ export default async function Blog(props: { params: Params }) {
             height={600}
           />
         </div>
-        <div className="content-container mt-12">
-          <p className="text-white text-lg sm:text-xl">{post.content}</p>
+        <div className="content-container mt-12 markdown ">
+          <Markdown className="text-white prose-h1:text-foreground prose-headings:text-foreground prose-strong:text-white prose-neutral prose lg:prose-lg">
+            {post.content}
+          </Markdown>
         </div>
       </div>
     </div>

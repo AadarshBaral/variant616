@@ -3,6 +3,7 @@ import { Post } from "@/utils/types";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import {
+  DocumentData,
   collection,
   doc,
   getDoc,
@@ -26,6 +27,28 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 
+const generateUrl = async (data: DocumentData) => {
+  const imageRef = storageRef(storage, `${data.headerImage}`);
+  const imageUrl = await getDownloadURL(imageRef);
+  return imageUrl;
+};
+
+const returnData = async (doc: DocumentData, data: DocumentData) => {
+  const imageUrl = await generateUrl(data);
+  return {
+    id: doc.id,
+    title: data.title || "",
+    slug: data.slug || "",
+    headerImage: imageUrl,
+    featured: data.featured || false,
+    heroFeatured: data.heroFeatured || false,
+    content: data.content || "",
+    category: data.category || [],
+    date: data.date || "",
+    author: data.author || "",
+  };
+};
+
 export async function fetchPosts(): Promise<Post[]> {
   const postsCollection = collection(db, "posts");
   const snapshot = await getDocs(postsCollection);
@@ -33,21 +56,7 @@ export async function fetchPosts(): Promise<Post[]> {
   return Promise.all(
     snapshot.docs.map(async (doc) => {
       const data = doc.data();
-      const imageRef = storageRef(storage, `${data.headerImage}`);
-      const imageUrl = await getDownloadURL(imageRef);
-
-      return {
-        id: doc.id,
-        title: data.title || "",
-        slug: data.slug || "",
-        headerImage: imageUrl,
-        featured: data.featured || false,
-        heroFeatured: data.heroFeatured || false,
-        content: data.content || "",
-        category: data.category || [],
-        date: data.date || "",
-        author: data.author || "",
-      };
+      return returnData(doc, data);
     })
   );
 }
@@ -58,23 +67,7 @@ export async function fetchPostById(id: string): Promise<Post | null> {
 
     if (docSnap.exists()) {
       const data = docSnap.data();
-
-      // Fetch the full download URL for the image from Firebase Storage
-      const imageRef = storageRef(storage, `${data.headerImage}`);
-      const imageUrl = await getDownloadURL(imageRef);
-
-      return {
-        id: docSnap.id,
-        title: data.title || "",
-        slug: data.slug || "",
-        headerImage: imageUrl, // Use the full image URL here
-        featured: data.featured || false,
-        heroFeatured: data.heroFeatured || false,
-        content: data.content || "",
-        category: data.category || [],
-        date: data.date || "",
-        author: data.author || "",
-      };
+      return returnData(docSnap, data);
     } else {
       console.log("No such document!");
       return null;
@@ -84,3 +77,17 @@ export async function fetchPostById(id: string): Promise<Post | null> {
     return null;
   }
 }
+// export async function fetchHeroPosts(): Promise<Post[]> {
+//   const postsCollection = collection(db, "posts");
+//   const snapshot = await getDocs(postsCollection);
+
+//   return Promise.all(
+//     snapshot.docs.map(async (doc) => {
+//       const data = doc.data();
+//       const filteredData = data.filter(
+//         (item: any) => item.heroFeatured === true
+//       );
+//       return returnData(doc, filteredData[0]);
+//     })
+//   );
+// }

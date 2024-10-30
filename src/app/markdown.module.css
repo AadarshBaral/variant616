@@ -1,0 +1,33 @@
+.markdown h1 {
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 1em;
+}
+
+.markdown h2 {
+    font-size: 1.75em;
+    font-weight: bold;
+    margin-top: 1em;
+}
+
+.markdown p {
+    margin-top: 1em;
+    line-height: 1.6;
+}
+
+.markdown ul,
+.markdown ol {
+    padding-left: 1.5em;
+    margin-top: 1em;
+}
+
+.markdown a {
+    color: #1a73e8;
+    text-decoration: underline;
+}
+
+.markdown img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 1em 0;
+}

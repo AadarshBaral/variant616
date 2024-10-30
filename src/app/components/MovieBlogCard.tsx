@@ -12,7 +12,7 @@ function MovieBlogCard({ image, title, id }: IImageCardProps) {
   return (
     <Link
       href={`posts/${id}`}
-      className="h-[400px] sm:h-[500px] w-[300px] mx-auto sm:w-[350px] md:w-[360px] lg:w-[400px] bg-foreground  relative rounded-xl"
+      className="h-[400px] sm:h-[500px] w-[300px] mx-auto sm:w-[350px] md:w-[360px] lg:w-[400px] bg-foreground  relative rounded-xl sm:my-0 my-4"
     >
       <Image
         src={image}
@@ -22,7 +22,7 @@ function MovieBlogCard({ image, title, id }: IImageCardProps) {
         height={400}
       />
 
-      <div className="absolute bottom-0 left-0 w-full h-44 bg-black/30 z-2 backdrop-blur-[4px] rounded-xl">
+      <div className="absolute bottom-0 left-0 w-full h-32 sm:h-44 bg-black/30 z-2 backdrop-blur-[4px] rounded-xl">
         <div className=" min-w-fit text-white ml-3 md:bottom-8 md:left-8 z-10 flex h-full justify-start items-start flex-col  ">
           <p className="w-full mx-2 text-xl sm:text-3xl">{title}</p>
         </div>
