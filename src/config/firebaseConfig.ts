@@ -9,6 +9,8 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  query,
+  where,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage } from "firebase/storage";
 import { ref as storageRef } from "firebase/storage";
@@ -84,10 +86,25 @@ export async function fetchPostById(id: string): Promise<Post | null> {
 //   return Promise.all(
 //     snapshot.docs.map(async (doc) => {
 //       const data = doc.data();
-//       const filteredData = data.filter(
-//         (item: any) => item.heroFeatured === true
-//       );
+//       const filteredData = data.filter((item: any) => item.category === true);
 //       return returnData(doc, filteredData[0]);
 //     })
 //   );
 // }
+
+export const fetchPostsByCategory = async (category: string) => {
+  const postsCollection = collection(db, "posts");
+  const q = query(
+    postsCollection,
+    where("category", "array-contains", category)
+  );
+  const querySnapshot = await getDocs(q);
+
+  // Generate image URLs and return post data
+  return Promise.all(
+    querySnapshot.docs.map(async (doc) => {
+      const data = doc.data();
+      return returnData(doc, data);
+    })
+  );
+};

@@ -75,3 +75,16 @@ export const links = [
     href: "#",
   },
 ];
+export const categories = [
+  "Drama",
+  "Thriller",
+  "Horror",
+  "Romance",
+  "SciFi",
+  "Documentary",
+  "Fantasy",
+  "Animation",
+  "Mystery",
+  "Adventure",
+  "Crime",
+];
