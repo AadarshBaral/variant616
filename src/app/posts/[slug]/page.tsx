@@ -1,4 +1,4 @@
-import { fetchPostById } from "@/config/firebaseConfig";
+import { fetchPostById, fetchPostBySlug } from "@/config/firebaseConfig";
 import Image from "next/image";
 import Markdown from "react-markdown";
 export const revalidate = 60;
@@ -6,7 +6,7 @@ export const revalidate = 60;
 type Params = Promise<{ slug: string }>;
 export default async function Blog(props: { params: Params }) {
   const params = await props.params;
-  const post = await fetchPostById(params.slug);
+  const post = await fetchPostBySlug(params.slug);
 
   if (!post) {
     return <p>Post not found</p>;

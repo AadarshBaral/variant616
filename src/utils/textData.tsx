@@ -76,6 +76,7 @@ export const links = [
   },
 ];
 export const categories = [
+  "All",
   "Drama",
   "Thriller",
   "Horror",

@@ -6,6 +6,7 @@ import Link from "next/link";
 
 interface ExpandableItemProps {
   id: string;
+  slug: string;
   headerImage: string;
   title: string;
 }
@@ -91,7 +92,7 @@ const List = ({ item, className, index, activeItem, ...props }: ImageProps) => {
         <>
           <div className="bgBlur absolute bottom-0 left-0 w-full h-20 sm:h-32 bg-black/5 z-2 backdrop-blur-[4px]">
             <div className=" min-w-fit text-white ml-3 md:bottom-8 md:left-8 z-10 flex h-full justify-start items-center  ">
-              <Link href={`posts/${item.id}`}>
+              <Link href={`posts/${item.slug}`}>
                 <p className=" text-xl sm:text-3xl  md:text-5xl font-bold ">
                   {item.title}
                 </p>

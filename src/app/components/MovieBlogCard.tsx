@@ -7,6 +7,7 @@ interface IImageCardProps {
   image: string;
   title: string;
   id: string;
+  slug: string;
   className?: string;
   blurClassName?: string;
   textClassName?: string;
@@ -20,11 +21,12 @@ function MovieBlogCard({
   className,
   blurClassName,
   textClassName,
+  slug,
   btnClassName,
 }: IImageCardProps) {
   return (
     <Link
-      href={`posts/${id}`}
+      href={`posts/${slug}`}
       className={cn(
         "h-[400px] group sm:h-[500px] mx-10 w-auto sm:mx-auto sm:w-[350px] md:w-[360px] lg:w-[400px] bg-foreground  relative rounded-xl sm:my-0 my-4",
         className

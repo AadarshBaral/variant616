@@ -5,22 +5,25 @@ import React, { useEffect, useState } from "react";
 import MovieBlogCard from "../components/MovieBlogCard";
 import { categories } from "@/utils/textData";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
+import { cn } from "@/utils/cn";
 
 function Posts() {
   const ref = React.useRef<HTMLDivElement>(null);
   const scrollOffset = 100;
   const [isAtStart, setIsAtStart] = useState(true);
   const [isAtEnd, setIsAtEnd] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("drama");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [posts, setPosts] = useState<Post[]>([]);
-
+  const [loading, setLoading] = useState(false);
   // Fetch posts when category changes
   useEffect(() => {
+    setLoading(true);
     const fetchPosts = async () => {
       const filteredPosts = await fetchPostsByCategory(selectedCategory);
       setPosts(filteredPosts as Post[]);
     };
     fetchPosts();
+    setLoading(false);
   }, [selectedCategory]);
 
   // Scroll Handlers
@@ -41,7 +44,7 @@ function Posts() {
   const checkScrollPosition = () => {
     if (ref.current) {
       const { scrollLeft, scrollWidth, clientWidth } = ref.current;
-      setIsAtStart(scrollLeft === 0);
+      setIsAtStart(scrollLeft <= 10);
       setIsAtEnd(scrollLeft + clientWidth >= scrollWidth - 1);
     }
   };
@@ -59,7 +62,7 @@ function Posts() {
       }
     };
   }, []);
-
+  console.log(selectedCategory);
   // Render Category Options
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category.toLowerCase());
@@ -67,19 +70,21 @@ function Posts() {
 
   return (
     <div className="w-full h-auto z-10 ">
-      <div className="w-full relative ">
+      <div className="parent relative ">
         <div
           style={{ scrollBehavior: "smooth" }}
           ref={ref}
-          className="categorical-container w-auto flex flex-row justify-start items-center h-auto mt-10 overflow-hidden transition-all duration-100 -z-10"
+          className="categorical-container w-auto flex flex-row justify-start items-center h-auto mt-10 overflow-hidden overflow-x-auto scroll-m-10 sm:overflow-hidden transition-all duration-100 -z-10"
         >
           {categories.map((category, i) => (
             <p
               key={i}
               onClick={() => handleCategoryClick(category)}
-              className={`bg-white text-primary rounded-xl px-3 py-1 mx-2 text-md cursor-pointer ${
-                selectedCategory === category ? "bg-gray-300" : ""
-              }`}
+              className={cn(
+                `child  text-primary rounded-xl px-3 py-1 mx-2 text-md cursor-pointer bg-transparent border-2 text-foreground border-foreground`,
+                selectedCategory === category.toLowerCase() &&
+                  "bg-foreground text-background border-0"
+              )}
             >
               {category}
             </p>
@@ -100,8 +105,8 @@ function Posts() {
           {!isAtEnd && (
             <div
               onClick={handleRightClick}
-              style={{ boxShadow: "10px 0px 20px 0px #141A13" }}
-              className="absolute -right-8 z-20 right-btn bg-background shadow-2xl shadow-black h-14 w-10 flex justify-center items-center"
+              style={{ boxShadow: "10px 0px 20px 10px #141A13" }}
+              className="absolute -right-0 z-20 right-btn bg-background shadow-2xl shadow-black h-14 w-10 flex justify-center items-center"
             >
               <BiChevronRight className="h-6 w-6 text-white cursor-pointer" />
             </div>
@@ -109,21 +114,29 @@ function Posts() {
         </div>
       </div>
 
-      {/* Posts Grid */}
-      <div className="blogContainer grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 place-items-center h-full w-[100%] sm:w-[95%] sm:gap-x-2 sm:gap-y-7 mx-auto mt-15">
-        {posts.map((post) => (
-          <MovieBlogCard
-            key={post.id}
-            image={post.headerImage}
-            id={post.id}
-            title={post.title}
-            className="lg:w-64 lg:h-80 md:w-64 md:h-80 sm:w-64 sm:h-80 w-auto h-80 "
-            blurClassName="sm:h-32 "
-            textClassName="sm:text-lg"
-            btnClassName="p-2 text-sm left-2 rounded-lg"
-          />
-        ))}
-      </div>
+      {posts.length > 0 ? (
+        <div className="blogContainer grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 place-items-center h-full w-[100%] sm:w-[95%] sm:gap-x-2 sm:gap-y-7 mx-auto mt-10">
+          {posts.map((post) => (
+            <MovieBlogCard
+              key={post.id}
+              image={post.headerImage}
+              id={post.id}
+              slug={post.slug}
+              title={post.title}
+              className="lg:w-64 lg:h-80 md:w-64 md:h-80 sm:w-64 sm:h-80 w-auto h-[340px] "
+              blurClassName="sm:h-32 h-36 "
+              textClassName="sm:text-lg text-md"
+              btnClassName="p-2 text-sm left-2 rounded-lg"
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="w-full h-[30vh] flex justify-center items-center ">
+          <p className="text-center text-lg text-foreground text-foreground/50">
+            No Posts Found
+          </p>
+        </div>
+      )}
     </div>
   );
 }

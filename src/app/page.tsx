@@ -10,7 +10,12 @@ async function HomePage() {
   const posts: Post[] = await fetchPosts();
   const filterByHero = posts
     .filter((post) => post.heroFeatured === true)
-    .map(({ id, headerImage, title }) => ({ id, headerImage, title }));
+    .map(({ id, headerImage, title, slug }) => ({
+      id,
+      headerImage,
+      title,
+      slug,
+    }));
   return (
     <Main>
       <Expandable list={filterByHero.slice(0, 3)} />
@@ -30,6 +35,7 @@ async function HomePage() {
           <MovieBlogCard
             key={post.id}
             image={post.headerImage}
+            slug={post.slug}
             id={post.id}
             title={
               post.title.length > 50
