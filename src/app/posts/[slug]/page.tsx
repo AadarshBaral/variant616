@@ -1,12 +1,44 @@
-import { fetchPostById, fetchPostBySlug } from "@/config/firebaseConfig";
+import { fetchPostBySlug } from "@/config/firebaseConfig";
 import Image from "next/image";
 import Markdown from "react-markdown";
+
 export const revalidate = 60;
 
-type Params = Promise<{ slug: string }>;
-export default async function Blog(props: { params: Params }) {
-  const params = await props.params;
+type Params = { slug: string };
+
+export async function generateMetadata({ params }: { params: Params }) {
   const post = await fetchPostBySlug(params.slug);
+
+  if (!post) {
+    return {
+      title: "Post Not Found",
+      description: "The requested post could not be found.",
+    };
+  }
+
+  // Generating Open Graph metadata
+  return {
+    title: post.title,
+    description: post.content, // Ensure post has a description field
+    openGraph: {
+      title: post.title,
+      description: post.content,
+      images: [post.headerImage], // URL for image to display in social media previews
+      type: "article",
+      url: `https://variant616.vercel.app/posts/${params.slug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.content,
+      image: post.headerImage,
+    },
+  };
+}
+
+export default async function Blog(props: { params: Params }) {
+  const { slug } = await props.params;
+  const post = await fetchPostBySlug(slug);
 
   if (!post) {
     return <p>Post not found</p>;
