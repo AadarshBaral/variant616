@@ -1,12 +1,19 @@
 import { fetchPostBySlug } from "@/config/firebaseConfig";
 import Image from "next/image";
 import Markdown from "react-markdown";
+import { Metadata } from "next";
 
+// Revalidate every 60 seconds
 export const revalidate = 60;
 
+// Define Params as an object instead of a Promise
 type Params = { slug: string };
 
-export async function generateMetadata({ params }: { params: Params }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
   const post = await fetchPostBySlug(params.slug);
 
   if (!post) {
@@ -31,14 +38,14 @@ export async function generateMetadata({ params }: { params: Params }) {
       card: "summary_large_image",
       title: post.title,
       description: post.content,
-      image: post.headerImage,
+      images: [post.headerImage], // Change from 'image' to 'images'
     },
   };
 }
 
-export default async function Blog(props: { params: Params }) {
-  const { slug } = await props.params;
-  const post = await fetchPostBySlug(slug);
+export default async function Blog({ params }: { params: Params }) {
+  // Destructure slug directly from the params object
+  const post = await fetchPostBySlug(params.slug);
 
   if (!post) {
     return <p>Post not found</p>;
