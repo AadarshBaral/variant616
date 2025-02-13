@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image, { ImageProps } from "next/image";
 
 interface CarouselProps {
+  //@ts-ignore
   items: JSX.Element[];
   initialScroll?: number;
 }
