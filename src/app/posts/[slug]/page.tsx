@@ -6,13 +6,17 @@ import { Metadata } from "next";
 // Revalidate every 60 seconds
 export const revalidate = 60;
 
-// Define Params as an object instead of a Promise
-type Params = { slug: string };
+// Define the params interface
+interface PageProps {
+  params: Promise<{
+    slug: string;
+  }>;
+}
 
 export async function generateMetadata({
   params,
 }: {
-  params: Params;
+  params: { slug: string };
 }): Promise<Metadata> {
   const post = await fetchPostBySlug(params.slug);
 
@@ -23,14 +27,13 @@ export async function generateMetadata({
     };
   }
 
-  // Generating Open Graph metadata
   return {
     title: post.title,
-    description: post.content, // Ensure post has a description field
+    description: post.content,
     openGraph: {
       title: post.title,
       description: post.content,
-      images: [post.headerImage], // URL for image to display in social media previews
+      images: [post.headerImage],
       type: "article",
       url: `https://variant616.vercel.app/posts/${params.slug}`,
     },
@@ -38,14 +41,15 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: post.title,
       description: post.content,
-      images: [post.headerImage], // Change from 'image' to 'images'
+      images: [post.headerImage],
     },
   };
 }
 
-export default async function Blog({ params }: { params: Params }) {
-  // Destructure slug directly from the params object
-  const post = await fetchPostBySlug(params.slug);
+export default async function Blog({ params }: PageProps) {
+  // Await the params Promise to get the slug
+  const resolvedParams = await params;
+  const post = await fetchPostBySlug(resolvedParams.slug);
 
   if (!post) {
     return <p>Post not found</p>;
@@ -66,7 +70,7 @@ export default async function Blog({ params }: { params: Params }) {
             height={600}
           />
         </div>
-        <div className="content-container mt-12 markdown ">
+        <div className="content-container mt-12 markdown">
           <Markdown className="text-white prose-h1:text-foreground prose-headings:text-foreground prose-strong:text-white prose-neutral prose lg:prose-lg">
             {post.content}
           </Markdown>
