@@ -1,4 +1,5 @@
 import React from "react";
+
 import Expandable from "./components/Expandable";
 import Main from "./components/Main";
 import MovieBlogCard from "./components/MovieBlogCard";

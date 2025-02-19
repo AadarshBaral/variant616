@@ -151,6 +151,7 @@ const returnData = async (doc: any) => {
     category: doc.category || [],
     date: doc.date || "",
     author: doc.author || "",
+    likes: doc.likes || 0,
   };
 };
 

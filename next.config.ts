@@ -4,9 +4,9 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["cloud.appwrite.io"],
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  // typescript: {
+  //   ignoreBuildErrors: true,
+  // },
   async headers() {
     return [
       {

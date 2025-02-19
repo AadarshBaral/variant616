@@ -9,4 +9,5 @@ export interface Post {
   category: string[];
   date: string;
   author: string;
+  likes: number;
 }

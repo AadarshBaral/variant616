@@ -20,6 +20,7 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateY(80%)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+
         "reveal-down": {
           "0%": { opacity: "0", transform: "translateY(-80%)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
@@ -28,6 +29,14 @@ const config: Config = {
           "0%": { filter: "blur(0.3rem)" },
           "100%": { filter: "blur(0)" },
         },
+        bloop: {
+          "0%": { transform: "scale(1)", opacity: "1" },
+          "75%": { transform: "scale(1.5)", opacity: "1" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
+      },
+      animation: {
+        bloop: "bloop 0.5s ease-out",
       },
     },
   },
