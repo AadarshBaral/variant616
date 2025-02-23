@@ -65,7 +65,7 @@ export default function Posts({
   const handleCategoryClick = async (category: string) => {
     const newCategory = category.toLowerCase();
     setCurrentCategory(newCategory);
-    router.push("?category=" + category.toLowerCase());
+    router.push(category.toLowerCase());
     setLoading(true);
     const res = await fetchPostsByCategory(newCategory);
     setPosts(res as Post[]);
