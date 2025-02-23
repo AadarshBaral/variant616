@@ -7,7 +7,7 @@ import { categories } from "@/utils/textData";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { cn } from "@/utils/cn";
 
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface PostClientProps {
   initialPosts: Post[];
@@ -23,21 +23,9 @@ export default function Posts({
   const scrollOffset = 100;
   const [isAtStart, setIsAtStart] = useState(true);
   const [isAtEnd, setIsAtEnd] = useState(false);
-
+  const [currentCategory, setCurrentCategory] = useState(selectedCategory);
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [loading, setLoading] = useState(false);
-  // // Fetch posts when category changes
-  // useEffect(() => {
-  //   setLoading(true);
-  //   const fetchPosts = async () => {
-  //     const filteredPosts = await fetchPostsByCategory(selectedCategory);
-  //     setPosts(filteredPosts as Post[]);
-  //   };
-  //   fetchPosts();
-  //   setLoading(false);
-  // }, [selectedCategory]);
-
-  // Scroll Handlers
   const handleLeftClick = () => {
     if (ref.current) {
       ref.current.scrollLeft -= scrollOffset;
@@ -76,6 +64,7 @@ export default function Posts({
 
   const handleCategoryClick = async (category: string) => {
     const newCategory = category.toLowerCase();
+    setCurrentCategory(newCategory);
     router.push("?category=" + category.toLowerCase());
     setLoading(true);
     const res = await fetchPostsByCategory(newCategory);
@@ -97,7 +86,7 @@ export default function Posts({
               onClick={() => handleCategoryClick(category)}
               className={cn(
                 `child  text-primary rounded-xl px-3 py-1 mx-2 text-md cursor-pointer bg-transparent border-2 text-foreground border-foreground`,
-                selectedCategory === category.toLowerCase() &&
+                currentCategory === category.toLowerCase() &&
                   "bg-foreground text-background border-0"
               )}
             >
