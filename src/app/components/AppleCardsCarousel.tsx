@@ -4,6 +4,7 @@ import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { cn } from "@/utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
 import Image, { ImageProps } from "next/image";
+import Link from "next/link";
 
 interface CarouselProps {
   //@ts-ignore
@@ -152,26 +153,28 @@ export const Card = ({
 }) => {
   return (
     <>
-      <AnimatePresence></AnimatePresence>
-      <motion.button
-        layoutId={layout ? `card-${card.title}` : undefined}
-        className="rounded-3xl  bg-gray-100 dark:bg-neutral-900 h-[20rem] w-56 md:h-[25rem] md:w-96 overflow-hidden flex flex-col items-start justify-start relative z-10"
-      >
-        <BlurImage
-          src={card.src}
-          alt={card.title}
-          fill
-          className="object-cover absolute z-10 inset-0"
-        />
-        <div className="blurContainer bg-black/20 h-28 w-full absolute bottom-0 left-0 z-10 backdrop-blur-[4px]">
-          <div className=" text-white ml-3 md:bottom-8 md:left-8 z-10 flex h-full justify-start  flex-col ">
-            <p className="text-start text-xl sm:text-3xl font-bold">Top:</p>
-            <p className="text-[#FFDE77] text-start text-xl sm:text-3xl font-bold">
-              {card.title}
-            </p>
+      <Link href={`/posts?category=${card.title.toLowerCase()}`}>
+        <AnimatePresence></AnimatePresence>
+        <motion.button
+          layoutId={layout ? `card-${card.title}` : undefined}
+          className="rounded-3xl  bg-gray-100 dark:bg-neutral-900 h-[20rem] w-56 md:h-[25rem] md:w-96 overflow-hidden flex flex-col items-start justify-start relative z-10"
+        >
+          <BlurImage
+            src={card.src}
+            alt={card.title}
+            fill
+            className="object-cover absolute z-10 inset-0"
+          />
+          <div className="blurContainer bg-black/20 h-28 w-full absolute bottom-0 left-0 z-10 backdrop-blur-[4px]">
+            <div className=" text-white ml-3 md:bottom-8 md:left-8 z-10 flex h-full justify-start  flex-col ">
+              <p className="text-start text-xl sm:text-3xl font-bold">Top:</p>
+              <p className="text-[#FFDE77] text-start text-xl sm:text-3xl font-bold">
+                {card.title}
+              </p>
+            </div>
           </div>
-        </div>
-      </motion.button>
+        </motion.button>
+      </Link>
     </>
   );
 };

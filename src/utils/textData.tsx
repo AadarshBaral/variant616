@@ -19,7 +19,7 @@ export const data = [
   },
   {
     category: "Top:",
-    title: "Space",
+    title: "SciFi",
     src: "/images/space.png",
   },
   {
