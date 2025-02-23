@@ -153,7 +153,7 @@ export const Card = ({
 }) => {
   return (
     <>
-      <Link href={`/posts?category=${card.title.toLowerCase()}`}>
+      <Link href={`/posts/category/${card.title.toLowerCase()}`}>
         <AnimatePresence></AnimatePresence>
         <motion.button
           layoutId={layout ? `card-${card.title}` : undefined}

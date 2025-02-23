@@ -24,7 +24,7 @@ async function HomePage() {
       <div className="blog-header-container w-full flex justify-between items-center">
         <h1 className="text-6xl text-foreground ml-6">Blog</h1>
         <Link
-          href={"/posts"}
+          href={"/posts/category/all"}
           className="text-3xl text-foreground/40 mr-6 underline cursor-pointer"
         >
           View All
